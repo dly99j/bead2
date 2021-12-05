@@ -1,0 +1,86 @@
+﻿<Window x:Class="bead2.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Macilaci" Height="450" Width="400" MinHeight="450" MinWidth="400">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding WKeyCommand}" Key="W"/>
+        <KeyBinding Command="{Binding AKeyCommand}" Key="A"/>
+        <KeyBinding Command="{Binding SKeyCommand}" Key="S"/>
+        <KeyBinding Command="{Binding DKeyCommand}" Key="D"/>
+        <KeyBinding Command="{Binding PKeyCommand}" Key="P"/>
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />                
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Menu Grid.Row="0">
+            <MenuItem Header="Játék">
+                <MenuItem Header="Újrakezdés" Command="{Binding NewGameCommand}" />
+                <MenuItem Header="Új játék">
+                    <MenuItem Header="Level 1" Command="{Binding LevelOneCommand}" />
+                    <MenuItem Header="Level 2" Command="{Binding LevelTwoCommand}" />
+                    <MenuItem Header="Level 3" Command="{Binding LevelThreeCommand}" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Kilépés" Command="{Binding ExitCommand}" />
+            </MenuItem>
+        </Menu>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}"> 
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="10" Columns="10" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Focusable="False" RenderTransformOrigin="0.5, 0.5">
+                        <Button.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </Button.RenderTransform>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsEmpty}" Value="True">
+                                        <Setter Property="Background" Value="White" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsGuard}" Value="True">
+                                        <Setter Property="Background" Value="Blue" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsPlayer}" Value="True">
+                                        <Setter Property="Background" Value="Green" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsTree}" Value="True">
+                                        <Setter Property="Background" Value="Brown" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsFood}" Value="True">
+                                        <Setter Property="Background" Value="Red" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Grid.Row" Value="{Binding X}" />
+                    <Setter Property="Grid.Column" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+        <StatusBar Grid.Row="2">
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="Játékidő: " />
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding GameTime}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem />
+        </StatusBar>
+    </Grid>
+</Window>
